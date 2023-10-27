@@ -1,0 +1,36 @@
+[package]
+name = "parquet-view-rs"
+version = "0.1.0"
+authors = ["Walnut"]
+edition = "2021"
+rust-version = "1.73"
+
+
+[dependencies]
+egui = "0.23.0"
+eframe = { version = "0.23.0", default-features = false, features = [
+    "default_fonts", # Embed the default egui fonts.
+    "glow",          # Use the glow rendering backend. Alternative: "wgpu".
+] }
+log = "0.4"
+egui_extras = "0.23.0"
+
+# You only need serde if you want app persistence:
+serde = { version = "1", features = ["derive"] }
+polars = { version = "0.34.2", features = [
+    "lazy",
+    "dtype-full",
+    "parquet",
+    "sql",
+    "timezones",
+    "performant",
+] }
+tinyfiledialogs = "3.9.1"
+
+# native:
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+env_logger = "0.10"
+
+# Optimize all dependencies even in debug builds:
+[profile.dev.package."*"]
+opt-level = 2
